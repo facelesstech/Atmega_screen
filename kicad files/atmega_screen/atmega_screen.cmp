@@ -1,0 +1,129 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 06/06/2014 18:19:55
+
+BeginCmp
+TimeStamp = /538F385D;
+Reference = C1;
+ValeurCmp = 10;
+IdModule  = C_3mm;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F3D46;
+Reference = C2;
+ValeurCmp = 10;
+IdModule  = C_3mm;
+EndCmp
+
+BeginCmp
+TimeStamp = /538E1697;
+Reference = C3;
+ValeurCmp = 10;
+IdModule  = C_3mm;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F744F;
+Reference = D1;
+ValeurCmp = RGB_LED;
+IdModule  = RGB_LED_Anode;
+EndCmp
+
+BeginCmp
+TimeStamp = /538E15FA;
+Reference = FTDI1;
+ValeurCmp = FTDI;
+IdModule  = FTDI_Board;
+EndCmp
+
+BeginCmp
+TimeStamp = /538CF114;
+Reference = IC1;
+ValeurCmp = ATMEGA328-P;
+IdModule  = DIP-28_Socket;
+EndCmp
+
+BeginCmp
+TimeStamp = /538E1DED;
+Reference = IC2_LCD1;
+ValeurCmp = IC2_LCD;
+IdModule  = IC2_LED;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F459B;
+Reference = R1;
+ValeurCmp = 120;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F768C;
+Reference = R2;
+ValeurCmp = 220;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F7686;
+Reference = R3;
+ValeurCmp = 220;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F7679;
+Reference = R4;
+ValeurCmp = 220;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F4DBC;
+Reference = SP1;
+ValeurCmp = SPEAKER;
+IdModule  = Piezo_buzz_TH;
+EndCmp
+
+BeginCmp
+TimeStamp = /538E1EB6;
+Reference = SW1;
+ValeurCmp = SWITCH_INV;
+IdModule  = MICROSWITCH_SPST;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F56BB;
+Reference = SW2;
+ValeurCmp = SW_PUSH;
+IdModule  = SW_PUSH_SMALL_OBR;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F6DDB;
+Reference = SW3;
+ValeurCmp = SW_PUSH;
+IdModule  = SW_PUSH_SMALL_OBR;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F6DE1;
+Reference = SW4;
+ValeurCmp = SW_PUSH;
+IdModule  = SW_PUSH_SMALL_OBR;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F3732;
+Reference = U1;
+ValeurCmp = DS1307;
+IdModule  = IC2_DS1307;
+EndCmp
+
+BeginCmp
+TimeStamp = /538F384E;
+Reference = X1;
+ValeurCmp = CRYSTAL;
+IdModule  = CRYSTAL_A_S;
+EndCmp
+
+EndListe

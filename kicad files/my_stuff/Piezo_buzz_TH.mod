@@ -1,0 +1,30 @@
+PCBNEW-LibModule-V1  Mon 17 Mar 2014 22:30:55 GMT
+# encoding utf-8
+$INDEX
+Piezo_buzz_TH
+$EndINDEX
+$MODULE Piezo_buzz_TH
+Po 0 0 0 15 5327774E 00000000 ~~
+Li Piezo_buzz_TH
+Sc 00000000
+AR Piezo_buzz_TH
+Op 0 0 0
+T0 0 3800 600 600 0 120 N V 21 N "Piezo_buzz_TH"
+T1 0 -3820 600 600 0 120 N V 21 N "SPK**"
+DC 0 0 3160 60 150 21
+$PAD
+Sh "1" C 650 650 0 0 0
+Dr 413 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -1960 0
+$EndPAD
+$PAD
+Sh "2" C 650 650 0 0 0
+Dr 413 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 1960 0
+$EndPAD
+$EndMODULE  Piezo_buzz_TH
+$EndLIBRARY

@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0  Date: 07/06/2014 18:06:46
+#
+$CMP FTDI
+D Condensateur non polarise
+$ENDCMP
+#
+$CMP IC2_LCD
+D Condensateur non polarise
+$ENDCMP
+#
+$CMP RGB_LED
+K LED
+$ENDCMP
+#
+#End Doc Library
