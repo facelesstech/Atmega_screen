@@ -46,75 +46,75 @@ class Stock_ticker(object):
 
 
 if __name__ == '__main__':
-    arduino = serial.Serial('/dev/ttyUSB0', 9600) #arduino nano
-    #arduino = serial.Serial('/dev/ttyUSB1', 9600) #arduino nano
+    #arduino = serial.Serial('/dev/ttyUSB0', 9600) #arduino nano
+    arduino = serial.Serial('/dev/ttyUSB1', 9600) #arduino nano
     update = Stock_ticker()
     
     update.GOOG_stock_pull()
     print "GOOG price %s %s" % (update.GOOG_price, update.GOOG_percent)
-    arduino.write("%s %sA" % (update.GOOG_price, update.GOOG_percent))
+    arduino.write("#1#%s %s;" % (update.GOOG_price, update.GOOG_percent))
     first1, last1 = str(update.GOOG_percent).split("%", 1)
     print first1
     #print last1
     if float(first1) > 0:
         print "Green"
-        arduino.write("1a")
+        arduino.write("#2#1;")
         
     elif float(first1) < 0:
         print "Red"
-        arduino.write("2a")
+        arduino.write("#2#2;")
         
     else:
         print "Even"
-        arduino.write("0a")
+        arduino.write("#2#0;")
     
     update.AAPL_stock_pull()
     print "AAPL price %s %s" % (update.AAPL_price, update.AAPL_percent)
-    arduino.write("%s %sB" % (update.AAPL_price, update.AAPL_percent))
+    arduino.write("#3#%s %s;" % (update.AAPL_price, update.AAPL_percent))
     first2, last2 = str(update.AAPL_percent).split("%", 1)
     print first2
     if float(first2) > 0:
         print "Green"
-        arduino.write("1b")
+        arduino.write("#4#1;")
         
     elif float(first2) < 0:
         print "Red"
-        arduino.write("2b")
+        arduino.write("#4#2;")
         
     else:
         print "Even"
-        arduino.write("0b")
+        arduino.write("#4#0;")
     
     update.TWTR_stock_pull()
     print "TWTR price %s %s" % (update.TWTR_price, update.TWTR_percent)
-    arduino.write("%s %sC" % (update.TWTR_price, update.TWTR_percent))
+    arduino.write("#5#%s %s;" % (update.TWTR_price, update.TWTR_percent))
     first3, last3 = str(update.TWTR_percent).split("%", 1)
     print first3
     if float(first3) > 0:
         print "Green"
-        arduino.write("1c")
+        arduino.write("#6#1;")
         
     elif float(first3) < 0:
         print "Red"
-        arduino.write("2c")
+        arduino.write("#6#2;")
         
     else:
         print "Even"
-        arduino.write("0c")
+        arduino.write("#6#0;")
     
     update.FB_stock_pull()
     print "FB price %s %s" % (update.FB_price, update.FB_percent)
-    arduino.write("%s %sD" % (update.FB_price, update.FB_percent))
+    arduino.write("#7#%s %s;" % (update.FB_price, update.FB_percent))
     first4, last4 = str(update.FB_percent).split("%", 1)
     print first4
     if float(first4) > 0:
         print "Green"
-        arduino.write("1d")
+        arduino.write("#8#1;")
         
     elif float(first4) < 0:
         print "Red"
-        arduino.write("2d")
+        arduino.write("#8#2;")
         
     else:
         print "Even"
-        arduino.write("0d")
+        arduino.write("#8#0;")
