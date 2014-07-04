@@ -30,7 +30,7 @@ byte degree[8] = {
 };
 
 // Button stuff
-const int button = 3;
+const int button = 5;
 int buttonPushCounter1 = 8;    // counts the button pushes
 int buttonState1 = 0;    // tracks the button state
 int lastButtonState1 = 0;    // last state of the button
@@ -54,36 +54,37 @@ long waitUntilcycle7 = 30000;
 int redPin = 12;
 int greenPin = 11;
 int bluePin = 10;
-#define COMMON_ANODE
+//#define COMMON_ANODE
+
+// RTC stuff
+const int DS1307 = 0x68; // Address of DS1307 see data sheets
+const char* days[] =
+{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+// Initializes all values: 
+byte second = 0;
+byte minute = 0;
+byte hour = 0;
+byte weekday = 0;
+byte monthday = 0;
+byte month = 0;
+byte year = 0;
+
 
 void setup() {
+  Wire.begin();
   lcd.backlight();
   lcd.init();
+  lcd.begin(16, 2);
   pinMode(button, INPUT);
   digitalWrite(button, HIGH);
   //lcd.createChar(0, degree);
   Serial.begin(9600);
   Serial.println("Waiting");
-  lcd.begin(16, 2);
-  
-  #ifdef AVR
-  Wire.begin();
-  #else
-    Wire1.begin(); // Shield I2C pins connect to alt I2C bus on Arduino Due
-  #endif
-    rtc.begin();
-  
-  if (! rtc.isrunning()) {
-    Serial.println("RTC is NOT running!");
-    // following line sets the RTC to the date & time this sketch was compiled
-    rtc.adjust(DateTime(__DATE__, __TIME__));
-  }
 }
 
 void loop() {
   //Serial.println(highest_temp);
-  // RTC PRINT CODE
-  DateTime now = rtc.now();
   lcd.setCursor(0,0);
   if (Serial.available())  {
     char c = Serial.read();  //gets one byte from serial buffer
@@ -250,43 +251,26 @@ void loop() {
 
   if (buttonPushCounter1 == 7) {
           
-    lcd.setCursor(0,0);
-    // RTC PRINT CODE
-    DateTime now = rtc.now();
-  
-    lcd.print("Time ");
-    lcd.print(now.hour(), DEC);
-    lcd.print(':');
-    
-    if (now.minute() < 10) {
-      lcd.print("0");
-      lcd.print(now.minute(), DEC);
-    }
-    else {
-      lcd.print(now.minute(), DEC);
-    }
-    lcd.print(':');
-    
-    if (now.second() < 10) {
-      lcd.print("0");
-      lcd.print(now.second(), DEC);
-    }
-    else {
-      lcd.print(now.second(), DEC);
-    }
-    if (now.second() == 0) {
-      if (millis() >= waitUntiltime) {
-      lcd.clear();
-      waitUntiltime += 700;
-      }
-    }
-    lcd.setCursor(0,1);
-    lcd.print("Date ");
-    lcd.print(now.day(), DEC);
-    lcd.print('/');
-    lcd.print(now.month(), DEC);
-    lcd.print('/');
-    lcd.print(now.year(), DEC);
+    char buffer_minutes[3];
+      char buffer_seconds[3];
+      //lcd.clear();
+      lcd.setCursor(0,0);
+      readTime();
+      lcd.print(days[weekday-1]);
+      lcd.setCursor(0,1);
+      lcd.print(monthday);
+      lcd.print("/");
+      lcd.print(month);
+      lcd.print("/");
+      lcd.print(year);
+      lcd.print(" ");
+      lcd.print(hour);
+      lcd.print(":");
+      sprintf(buffer_minutes, "%02d", minute);
+      lcd.print(buffer_minutes);
+      lcd.print(":");
+      sprintf(buffer_seconds, "%02d", second);
+      lcd.print(buffer_seconds);
   }
   
   
@@ -346,29 +330,23 @@ void loop() {
       waitUntilcycle6 += 35000;
     }
     if (millis() >= waitUntilcycle7) {
+      char buffer_minutes[3];
+      char buffer_seconds[3];
       lcd.clear();
       lcd.setCursor(0,0);
-      // RTC PRINT CODE
-      DateTime now = rtc.now();
-  
-      lcd.print("Time ");
-      lcd.print(now.hour(), DEC);
-      lcd.print(':');
-    
-      if (now.minute() < 10) {
-        lcd.print("0");
-        lcd.print(now.minute(), DEC);
-    }
-      else {
-        lcd.print(now.minute(), DEC);
-    }
+      readTime();
+      lcd.print(days[weekday-1]);
       lcd.setCursor(0,1);
-      lcd.print("Date ");
-      lcd.print(now.day(), DEC);
-      lcd.print('/');
-      lcd.print(now.month(), DEC);
-      lcd.print('/');
-      lcd.print(now.year(), DEC);
+      lcd.print(monthday);
+      lcd.print("/");
+      lcd.print(month);
+      lcd.print("/");
+      lcd.print(year);
+      lcd.print(" ");
+      lcd.print(hour);
+      lcd.print(":");
+      sprintf(buffer_minutes, "%02d", minute);
+      lcd.print(buffer_minutes);
       waitUntilcycle7 += 35000;
   }
   }
@@ -385,4 +363,51 @@ void setColor(int red, int green, int blue)
   analogWrite(greenPin, green);
   analogWrite(bluePin, blue);  
 }
+
+/*void printTime() {
+  char buffer[3];
+  const char* AMPM = 0;
+  readTime();
+  Serial.print(days[weekday-1]);
+  Serial.print(" ");
+  Serial.print(months[month-1]);
+  Serial.print(" ");
+  Serial.print(monthday);
+  Serial.print(", 20");
+  Serial.print(year);
+  Serial.print(" ");
+  if (hour > 12) {
+    hour -= 12;
+    AMPM = " PM";
+  }
+  else AMPM = " AM";
+  Serial.print(hour);
+  Serial.print(":");
+  sprintf(buffer, "%02d", minute);
+  Serial.print(buffer);
+  Serial.println(AMPM);
+}*/
+
+
+void readTime() {
+  Wire.beginTransmission(DS1307);
+  Wire.write(byte(0));
+  Wire.endTransmission();
+  Wire.requestFrom(DS1307, 7);
+  second = bcdToDec(Wire.read());
+  minute = bcdToDec(Wire.read());
+  hour = bcdToDec(Wire.read());
+  weekday = bcdToDec(Wire.read());
+  monthday = bcdToDec(Wire.read());
+  month = bcdToDec(Wire.read());
+  year = bcdToDec(Wire.read());
+}
+
+byte decToBcd(byte val) {
+  return ((val/10*16) + (val%10));
+}
+byte bcdToDec(byte val) {
+  return ((val/16*10) + (val%16));
+}
+
 
