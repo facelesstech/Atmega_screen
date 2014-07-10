@@ -1,7 +1,6 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-#include "RTClib.h"
 
 String readString; // readstring is for collecting the serial buffer code
 String temp_c;  // string that stores temp
@@ -13,17 +12,7 @@ String lowest_time;  // Time last lowest
 String highest_temp;  // string that stores highest temp
 String highest_time;   // string that stores highest temp time
 
-// degree centigrade
-byte degree[8] = {
-  B01000,
-  B10100,
-  B01000,
-  B00011,
-  B00100,
-  B00100,
-  B00011,
-  B00000
-};
+uint8_t degree[8] = {0x8,0xf4,0x8,0x43,0x4,0x4,0x43,0x0};
 
 // Button
 const int button = 5; // Set button to pin 5
@@ -74,7 +63,7 @@ void setup() {
   lcd.begin(16, 2); // Set up the lcd to have 16 char on 2 lines
   pinMode(button, INPUT); // Set the button as input
   digitalWrite(button, HIGH); // initiate the internal pull up resistor
-  //lcd.createChar(0, degree);
+  lcd.createChar(0, degree);
   Serial.begin(9600); // Begin serial at 9600 baud
   Serial.println("Waiting"); // Print to serial 
 }
@@ -194,17 +183,14 @@ void loop() {
       lcd.print("--Current temp--");
       lcd.setCursor(0,1); // Set cursor to start of the second screen
       lcd.print(temp_c); // Lcd print temp_c string
-      //lcd.print(char(0));
-      //lcd.write(165);
-      lcd.print("C");
+      lcd.print((char)0);
     }
     
     if (buttonPushCounter1 == 2) {
       lcd.print("---Feels like---");
       lcd.setCursor(0,1); // Set cursor to start of the second screen
       lcd.print(feels); // Lcd print feels string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
     }
 
     if (buttonPushCounter1 == 3) {
@@ -225,8 +211,7 @@ void loop() {
       lcd.print(lowest_time); // Lcd print lowest_time string
       lcd.print(" ");
       lcd.print(lowest_temp); // Lcd print lowest_temp string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
     }
     
     if (buttonPushCounter1 == 6) {
@@ -235,8 +220,7 @@ void loop() {
       lcd.print(highest_time); // Lcd print highest_time string
       lcd.print(" ");
       lcd.print(highest_temp); // Lcd print highest_temp string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
     }
     
 
@@ -270,8 +254,7 @@ void loop() {
       lcd.print("--Current temp--");
       lcd.setCursor(0,1); // Ser cursor to start of second line
       lcd.print(temp_c); // Lcd print temp_c string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
       waitUntilcycle1 += 35000; // Addes 35000 to waitUntilcycle1
       }
     if (millis() >= waitUntilcycle2) {
@@ -279,8 +262,7 @@ void loop() {
       lcd.print("---Feels like---"); // Lcd print feels string
       lcd.setCursor(0,1); // Ser cursor to start of second line
       lcd.print(feels); // Lcd print feels String
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
       waitUntilcycle2 += 35000;
      }
     if (millis() >= waitUntilcycle3) {
@@ -304,8 +286,7 @@ void loop() {
       lcd.print(lowest_time); // Lcd print lowest_time string
       lcd.print(" ");
       lcd.print(lowest_temp); // Lcd print lowest_temp string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
       waitUntilcycle5 += 35000;
     }
     if (millis() >= waitUntilcycle6) {
@@ -315,8 +296,7 @@ void loop() {
       lcd.print(highest_time); // Lcd print highest_time string
       lcd.print(" ");
       lcd.print(highest_temp); // Lcd print highest_temp string
-      //lcd.print(char(0));
-      lcd.print("C");
+      lcd.print((char)0);
       waitUntilcycle6 += 35000;
     }
     if (millis() >= waitUntilcycle7) {
