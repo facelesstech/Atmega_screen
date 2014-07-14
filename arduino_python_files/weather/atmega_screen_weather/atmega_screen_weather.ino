@@ -12,19 +12,28 @@ String lowest_time;  // Time last lowest
 String highest_temp;  // string that stores highest temp
 String highest_time;   // string that stores highest temp time
 
-uint8_t degree[8] = {0x8,0xf4,0x8,0x43,0x4,0x4,0x43,0x0};
+uint8_t degree[8] = {0x8,0xf4,0x8,0x43,0x4,0x4,0x43,0x0}; // Custom char degrees c
 
-// Button
-const int button = 5; // Set button to pin 5
+// Button green stuff
+const int button_green = 5; // Set button to pin 5
 int buttonPushCounter1 = 8;    // counts the button pushes
 int buttonState1 = 0;    // tracks the button state
 int lastButtonState1 = 0;    // last state of the button
 
-// Debounce
+// Debounce green button
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;  // last button state set to low
 long lastDebounceTime = 0;  // the last time the output pin was toggled
 long debounceDelay = 50;    // the debounce time; increase if the output flickers
+
+// Button red top stuff
+const int button_top_red = 7; // Button set to pin 7
+long time = 0;         // the last time the output pin was toggled
+long debounce = 200;   // the debounce time, increase if the output flickers
+int state = 1;      // the current state of the output pin
+int reading;           // the current reading from the input pin
+int previous = LOW;    // the previous reading from the input pin
+
 
 // Timing for the display cycle times
 long waitUntilcycle1 = 0;
@@ -61,9 +70,14 @@ void setup() {
   lcd.backlight(); // Turn on the lcd backlight
   lcd.init(); // Start up the lcd
   lcd.begin(16, 2); // Set up the lcd to have 16 char on 2 lines
-  pinMode(button, INPUT); // Set the button as input
-  digitalWrite(button, HIGH); // initiate the internal pull up resistor
+  
+  pinMode(button_green, INPUT); // Set the button as input
+  digitalWrite(button_green, HIGH); // initiate the internal pull up resistor
+  pinMode(button_top_red, INPUT); // Set the button as input
+  digitalWrite(button_top_red, HIGH); // initiate the internal pull up resistor
+  
   lcd.createChar(0, degree);
+  
   Serial.begin(9600); // Begin serial at 9600 baud
   Serial.println("Waiting"); // Print to serial 
 }
@@ -148,8 +162,8 @@ void loop() {
     }
   }
   // -------------- Debound code start --------------
-  int reading = digitalRead(button); // Load button stat to int reading
-  buttonState1 = digitalRead(button); // Load button stat into buttonState1
+  int reading = digitalRead(button_green); // Load button stat to int reading
+  buttonState1 = digitalRead(button_green); // Load button stat into buttonState1
 
   if (reading != lastButtonState) { // Check if reading doesnt equal lastButtonState
     lastDebounceTime = millis(); 
@@ -178,6 +192,30 @@ void loop() {
   }
   lastButtonState = reading;
   // -------------- Debound code end --------------
+  
+  // -------------- Debound code button top red start code--------------
+
+  // if the input just went from LOW and HIGH and we've waited long enough
+  // to ignore any noise on the circuit, toggle the output pin and remember
+  // the time
+  reading = digitalRead(button_top_red);
+
+  if (reading == HIGH && previous == LOW && millis() - time > debounce) {
+    if (state == 1) {
+      state = 0;
+      lcd.backlight();
+    }
+    else {
+      state = 1;
+      lcd.noBacklight();
+    }
+
+    time = millis();    
+  }
+  //Serial.println(state);
+  previous = reading;
+   
+  // -------------- Debound code button top red end code --------------
   
     if (buttonPushCounter1 == 1) {
       lcd.print("--Current temp--");
