@@ -2,7 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
-int magic_8_random;
+int magic_8_random = 21; // Set int to 21 to no set off if statments below
 
 // Button stuff
 const int button_green = 5; // green button on pin 5
@@ -11,43 +11,29 @@ int lastButtonState1 = 0; // Tracks last button state
 
 // Debounce stuff
 int buttonState;             // The current reading from the input pin
-int lastButtonState = LOW;  // last button state set to low
+int lastButtonState = HIGH;  // last button state set to low
 long lastDebounceTime = 0;  // The last time the output pin was toggled
 long debounceDelay = 50;    // The debounce time; increase if the output flickers
-
-long waitUntil1 = 3000;
 
 void setup() {
   lcd.backlight(); // Turn on backlight
   lcd.init(); // Start the lcd screen
   lcd.begin(16, 2);  // Set up the lcd to have 16 char on 2 lines
   
-  lcd.setCursor(4,0);
-  lcd.print("Magic 8");
-  lcd.setCursor(6,1);
-  lcd.print("ball");
-  if (millis() >= waitUntil1) {
-    lcd.clear();
-    lcd.setCursor(2,0);
-    lcd.print("Press green");
-    //lcd.setCursor(3,1);
-    //lcd.print("<- button");
-  }
+  lcd.setCursor(2,0); // Sets cursor to the third char on the first row
+  lcd.print("Magic 8 ball"); 
+  lcd.setCursor(1,1); // Sets cursor to the second char on the second row
+  lcd.print("<- Press HERE");
+ 
+  pinMode(button_green, INPUT); // Set green button to input
+  digitalWrite(button_green, HIGH); // Turn on the internal pull up resistor
   
-  
-  
-  pinMode(button_green, INPUT);
-  digitalWrite(button_green, HIGH);
-  
-  Serial.begin(9600);
-  Serial.println("Starting");
-  randomSeed(666);  // Random seed of the random picker
+  Serial.begin(9600); // Begin serial at 9600 baud
+  Serial.println("Starting"); // Serial print
 }
   
 void loop() {
-  //time = millis();
-  Serial.println(millis());
-    // -------------- Debound code start --------------
+    // -------------- Debound code green button start --------------
   int reading = digitalRead(button_green);
   buttonState1 = digitalRead(button_green);
 
@@ -64,16 +50,29 @@ void loop() {
           
           if (buttonState1 == LOW) {
           // Do stuff here
-          magic_8_random = random(20);
+          magic_8_random = random(0,20);
           lcd.clear();
-          if (magic_8_random == 0)  {
-            Serial.println("It is certain");
-            lcd.setCursor(1,0);
-            lcd.print("It is certain");
+          
+          }
+        
+      else {
+            Serial.println("off"); 
+          }
+          }
+      lastButtonState1 = buttonState1;
+    }
+  }
+
+  lastButtonState = reading;
+        if (magic_8_random == 0)  {
+          Serial.println("It is certain");
+          lcd.setCursor(1,0);
+          lcd.print("It is certain");
         }
         
         if (magic_8_random == 1)  {
           Serial.println("It is decidedly so");
+          lcd.setCursor(0,0);
           lcd.print("It is decidedly");
           lcd.setCursor(7,1);
           lcd.print("so");
@@ -81,6 +80,7 @@ void loop() {
         
         if (magic_8_random == 2)  {
           Serial.println("Without a doubt");
+          lcd.setCursor(0,0);
           lcd.print("Without a doubt");
         }
         
@@ -108,12 +108,13 @@ void loop() {
         
         if (magic_8_random == 6)  {
           Serial.println("Most likely");
+          lcd.setCursor(2,0);
           lcd.print("Most likely");
         }
         
         if (magic_8_random == 7)  {
-          lcd.setCursor(2,0);
           Serial.println("Outlook good");
+          lcd.setCursor(2,0);
           lcd.print("Outlook good");
         }
         
@@ -135,19 +136,23 @@ void loop() {
           Serial.println("Reply hazy try again");
           lcd.setCursor(3,0);
           lcd.print("Reply hazy");
-          lcd.setCursor(4,1);
+          lcd.setCursor(3,1);
           lcd.print("try again");
         }
         
         if (magic_8_random == 11)  {
           Serial.println("Ask again later");
-          lcd.print("Ask again later");
+          lcd.setCursor(3,0);
+          lcd.print("Ask again");
+          lcd.setCursor(5,1);
+          lcd.print("later");
         }
         
         if (magic_8_random == 12)  {
           Serial.println("Better not tell you now");
+          lcd.setCursor(0,0);
           lcd.print("Better not tell");
-          lcd.setCursor(4,1);
+          lcd.setCursor(3,1);
           lcd.print("you now");
         }
         
@@ -161,6 +166,7 @@ void loop() {
         
         if (magic_8_random == 14)  {
           Serial.println("Concentrate and ask again");
+          lcd.setCursor(1,0);
           lcd.print("Concentrate and");
           lcd.setCursor(3,1);
           lcd.print("ask agiain");
@@ -192,29 +198,16 @@ void loop() {
           Serial.println("Outlook not so good");
           lcd.setCursor(2,0);
           lcd.print("Outlook not");
-          lcd.setCursor(4,1);
+          lcd.setCursor(4,1); // Move cursor to 4th char on second line
           lcd.print("so good");
         }
         
         if (magic_8_random == 19)  {
           Serial.println("Very doubtful");
-          lcd.setCursor(1,0);
+          lcd.setCursor(1,0); // Move cursor to second char on first line
           lcd.print("Very doubtful");
-        }
-          }
-        
-      else {
-            Serial.println("off"); 
-          }
-          }
-      lastButtonState1 = buttonState1;
-    }
-  }
-
-  lastButtonState = reading;
-
-        
+        }        
 
 }
-  // -------------- Debound code end --------------
+  // -------------- Debound code green button end --------------
 
