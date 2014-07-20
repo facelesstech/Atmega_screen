@@ -50,14 +50,16 @@ if __name__ == '__main__':
         arduino = serial.Serial('/dev/ttyUSB0', 9600) # Arduino Serial port
     except:
         arduino = serial.Serial('/dev/ttyUSB1', 9600) # Arduino Serial port
+        
     update = Stock_ticker()
-    
     update.GOOG_stock_pull()
-    print "GOOG price %s %s" % (update.GOOG_price, update.GOOG_percent)
-    arduino.write("#1#%s %s;" % (update.GOOG_price, update.GOOG_percent)) # Sends the stock price and percent change to the arduino
+    
+    print "GOOG price %.2f %s" % (float(update.GOOG_price), update.GOOG_percent)
+    arduino.write("#1#%.2f %s;" % (float(update.GOOG_price), update.GOOG_percent)) # Sends the stock price and percent change to the arduino
     first1, last1 = str(update.GOOG_percent).split("%", 1) # Splits the percent into the number and the percent sign
     print first1 # Number striped from the percent sign
     #print last1 # Just the percent sign
+    
     if float(first1) > 0: # If the number is greater then 0 turn the RGB LED green
         print "Green"
         arduino.write("#2#1;") # Tell the arduino to turn the RGB LED green
@@ -71,11 +73,12 @@ if __name__ == '__main__':
         arduino.write("#2#0;") # Tells the arduino to turn off the RGB LED
     
     update.AAPL_stock_pull()
-    print "AAPL price %s %s" % (update.AAPL_price, update.AAPL_percent)
-    arduino.write("#3#%s %s;" % (update.AAPL_price, update.AAPL_percent)) # Sends the stock price and percent change to the arduino
+    print "AAPL price %.2f %s" % (float(update.AAPL_price), update.AAPL_percent)
+    arduino.write("#3#%.2f %s;" % (float(update.AAPL_price), update.AAPL_percent)) # Sends the stock price and percent change to the arduino
     first2, last2 = str(update.AAPL_percent).split("%", 1) # Splits the percent into the number and the percent sign
     print first2 # Number striped from the percent sign
     #print last2 # Just the percent sign
+    
     if float(first2) > 0: # If the number is greater then 0 turn the RGB LED green
         print "Green"
         arduino.write("#4#1;") # Tell the arduino to turn the RGB LED green
@@ -89,11 +92,12 @@ if __name__ == '__main__':
         arduino.write("#4#0;") # Tells the arduino to turn off the RGB LED
     
     update.TWTR_stock_pull()
-    print "TWTR price %s %s" % (update.TWTR_price, update.TWTR_percent)
-    arduino.write("#5#%s %s;" % (update.TWTR_price, update.TWTR_percent)) # Sends the stock price and percent change to the arduino
+    print "TWTR price %.2f %s" % (float(update.TWTR_price), update.TWTR_percent)
+    arduino.write("#5#%.2f %s;" % (float(update.TWTR_price), update.TWTR_percent)) # Sends the stock price and percent change to the arduino
     first3, last3 = str(update.TWTR_percent).split("%", 1) # Splits the percent into the number and the percent sign
     print first3 # Number striped from the percent sign
     #print last3 # Just the percent sign
+    
     if float(first3) > 0: # If the number is greater then 0 turn the RGB LED green
         print "Green"
         arduino.write("#6#1;") # Tell the arduino to turn the RGB LED green
@@ -107,11 +111,12 @@ if __name__ == '__main__':
         arduino.write("#6#0;") # Tells the arduino to turn off the RGB LED
     
     update.FB_stock_pull()
-    print "FB price %s %s" % (update.FB_price, update.FB_percent)
-    arduino.write("#7#%s %s;" % (update.FB_price, update.FB_percent)) # Sends the stock price and percent change to the arduino
+    print "FB price %.2f %s" % (float(update.FB_price), update.FB_percent)
+    arduino.write("#7#%.2f %s;" % (float(update.FB_price), update.FB_percent)) # Sends the stock price and percent change to the arduino
     first4, last4 = str(update.FB_percent).split("%", 1) # Splits the percent into the number and the percent sign
     print first4 # Number striped from the percent sign
     #print last4 # Just the percent sign
+    
     if float(first4) > 0: # If the number is greater then 0 turn the RGB LED green
         print "Green"
         arduino.write("#8#1;") # Tell the arduino to turn the RGB LED green
