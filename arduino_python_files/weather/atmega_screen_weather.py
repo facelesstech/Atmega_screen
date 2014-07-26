@@ -16,7 +16,7 @@ class Ice(object):
         self.now = datetime.datetime.now().time()
         #self.now = datetime.time(12, 00) # test
         #self.temp_dict = {} # test
-        #self.temp_c = 11.6   # Test
+        #self.temp_c = 30.1   # Test
         #self.location = 'chester' # test
         
     def lowest_temp_read(self):
@@ -57,7 +57,7 @@ class Ice(object):
     
     def checking(self):
         # You will have to registor at wunderground here http://www.wunderground.com/weather/api/ and replace the xxxxxxxxxxxxxxxx below with your API key
-        f = urllib2.urlopen('http://api.wunderground.com/api/xxxxxxxxxxxxxxxx/geolookup/conditions/q/UK/Chester.json') # Opens the json link
+        f = urllib2.urlopen('http://api.wunderground.com/api/080b28233d8a1a49/geolookup/conditions/q/UK/Chester.json') # Opens the json link
         json_string = f.read() # Reads the json
         parsed_json = json.loads(json_string) # parses the json
         self.location = parsed_json['location']['city'] # Parse the location and city ie UK and chester
@@ -176,14 +176,20 @@ Atmega_screen edition
         scrap.write_highest_time() # Writes the current time to highest_time.txt
         
         
-    if 0 < scrap.temp_c <= 10: # Not currently used
+    if scrap.temp_c < 0: # If temp_c drops below 0 change led blue
+        print 'blue'
+        arduino.write('#blue#blue;') # Change RGB LED to blue
+    elif 0 < scrap.temp_c <= 10: # If temp_c is between 0 and 10 change LED to aqua
         print 'aqua'
-        #arduino.write('aqua@') # Change RGB LED to aqua
-    elif 10 < scrap.temp_c <= 20: # Not currently used
+        arduino.write('#aqua#aqua;') # Change RGB LED to aqua
+    elif 10 < scrap.temp_c <= 15: # If temp_C is between 10 and 15 change LED to yellow
         print 'yellow'
-        #arduino.write('yellow@') # Change RGB LED to yellow
-    elif 20 < scrap.temp_c <= 40: # Not currently used
+        arduino.write('#yellow#yellow;') # Change RGB LED to yellow
+    elif 20 < scrap.temp_c <= 30: # If temp_c is between 20 and 30 change LED to orange
+        print 'orange'
+        arduino.write('#orange#orange;') # Change RGB LED to red
+    elif 30 < scrap.temp_c <= 40: # If temp_c is between 30 and 40 change LED to red
         print 'red'
-        #arduino.write('red@') # Change RGB LED to red
-    else: # Not currently used
-        print 'not colour'
+        arduino.write('#red#red;')
+    else: 
+        print '#not colour#;'
