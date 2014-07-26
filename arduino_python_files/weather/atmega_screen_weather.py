@@ -57,7 +57,7 @@ class Ice(object):
     
     def checking(self):
         # You will have to registor at wunderground here http://www.wunderground.com/weather/api/ and replace the xxxxxxxxxxxxxxxx below with your API key
-        f = urllib2.urlopen('http://api.wunderground.com/api/080b28233d8a1a49/geolookup/conditions/q/UK/Chester.json') # Opens the json link
+        f = urllib2.urlopen('http://api.wunderground.com/api/xxxxxxxxxxxxxxxx/geolookup/conditions/q/UK/Chester.json') # Opens the json link
         json_string = f.read() # Reads the json
         parsed_json = json.loads(json_string) # parses the json
         self.location = parsed_json['location']['city'] # Parse the location and city ie UK and chester
