@@ -124,23 +124,31 @@ void setup() {
 void loop() {
   
   if (LED_state == 1) {
-        setColor(0, 0, 0);
-      }
+    setColor(0, 0, 0);
+  }
       
-        else {
+  else {
       
-          if (led_colour == "aqua") {
-            setColor(0, 255, 255); // Sets the RGB colour to aqua
-          }
+    if (led_colour == "aqua") {
+      setColor(0, 255, 255); // Sets the RGB colour to aqua
+    }
+    
+    else if (led_colour == "blue") {
+      setColor(0, 0, 255); // Sets the RGB colour to blue
+    }
           
-          else if (led_colour == "yellow") {
-            setColor(255, 255, 0); // Sets the RGB colour to yellow
-          }
-          
-          else if (led_colour == "red") {
-            setColor(255, 0, 0);  // Sets the RGB colour to red
-          }
-        }
+    else if (led_colour == "yellow") {
+      setColor(255, 255, 0); // Sets the RGB colour to yellow
+    }
+    
+    else if (led_colour == "orange") {
+      setColor(255, 127, 0); // Sets the RGE colour to orange
+    }
+    
+    else if (led_colour == "red") {
+      setColor(255, 0, 0);  // Sets the RGB colour to red
+    }
+  }
   
   lcd.setCursor(0,0); // Set lcd cursor to the start of the first row
   if (Serial.available())  { // Check to see if serial is available
@@ -192,26 +200,37 @@ void loop() {
           led_colour = readString.substring(6);
           //setColor(0, 0, 255); // Sets the RGB colour to blue
         }
+        
         else if (readString.startsWith("#green#")) { // Check if readString contains green
           led_colour = readString.substring(7);
           //setColor(0, 255, 0); // Sets the RGB colour to green
         }
+        
         else if (readString.startsWith("#red#")) { // Check if readString contains red
           led_colour = readString.substring(5);
           //setColor(255, 0, 0);  // Sets the RGB colour to red
         }
+        
         else if (readString.startsWith("#yellow#")) { // Check if readString contains yellow
           led_colour = readString.substring(8);
           //setColor(255, 255, 0); // Sets the RGB colour to yellow
         }
+        
+        else if (readString.startsWith("#orange#")) { // Check if readString contains yellow
+          led_colour = readString.substring(8);
+          //setColor(255, 127, 0); // Sets the RGB colour to orange
+        }
+        
         else if (readString.startsWith("#purple#")) { // Check if readString contains purple
           led_colour = readString.substring(8);
           //setColor(175, 0, 175); // Sets the RGB colour to purple
         }
+        
         else if (readString.startsWith("#aqua#")) { // Check if readString contains aqua
           led_colour = readString.substring(6);
           //setColor(0, 255, 255); // Sets the RGB colour to aqua
         }
+        
         readString=""; //clears variable for new input
       }
     }
@@ -380,7 +399,6 @@ void loop() {
       waitUntilcycle1 += 35000; // Addes 35000 to waitUntilcycle1
       }
     if (millis() >= waitUntilcycle2) {
-      setColor(0, 0, 0);
       lcd.clear();
       lcd.print("---Feels like---"); // Lcd print feels string
       lcd.setCursor(0,1); // Ser cursor to start of second line
