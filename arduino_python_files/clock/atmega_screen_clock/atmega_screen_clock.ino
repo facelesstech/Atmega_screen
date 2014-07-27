@@ -20,7 +20,7 @@ const int button_top_red = 7; // Button set to pin 5
 long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
 int state = HIGH;      // the current state of the output pin
-int reading;           // the current reading from the input pin
+int reading_red_top;           // the current reading from the input pin
 int previous = LOW;    // the previous reading from the input pin
 
 void setup() {
@@ -28,9 +28,19 @@ void setup() {
   lcd.backlight(); // Turn on the lcd backlight
   lcd.init(); // Start up the lcd
   lcd.begin(16, 2); // Set up the lcd to have 16 char on 2 lines
+  
+  // Splash screen
+  lcd.setCursor(1,0); // Set lcd cursor to start of first line
+  lcd.print("#atmega_screen");
+  lcd.setCursor(3,1); // Set lcd cursor to start of first line
+  lcd.print("Clock v0.1");
+  delay(1000);
+  lcd.clear();
+  
   pinMode(button_top_red, INPUT); // Set the button as input
   digitalWrite(button_top_red, HIGH); // initiate the internal pull up resistor
   Serial.begin(9600);
+  
   Serial.println("Start");
 }
 
@@ -41,9 +51,9 @@ void loop() {
   // if the input just went from LOW and HIGH and we've waited long enough
   // to ignore any noise on the circuit, toggle the output pin and remember
   // the time
-  reading = digitalRead(button_top_red);
+  reading_red_top = digitalRead(button_top_red);
 
-  if (reading == HIGH && previous == LOW && millis() - time > debounce) {
+  if (reading_red_top == HIGH && previous == LOW && millis() - time > debounce) {
     if (state == HIGH) {
       state = LOW;
       lcd.backlight();
@@ -56,7 +66,9 @@ void loop() {
     time = millis();    
   }
   
-  previous = reading;
+  previous = reading_red_top;
+  
+  // -------------- Debound code button top red end code --------------
    
   
   char buffer_minutes[3]; // Creates a char buffer of 3 characters for minutes
