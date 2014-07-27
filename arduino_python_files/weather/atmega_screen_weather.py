@@ -182,7 +182,7 @@ Atmega_screen edition
     elif 0 < scrap.temp_c <= 10: # If temp_c is between 0 and 10 change LED to aqua
         print 'aqua'
         arduino.write('#aqua#aqua;') # Change RGB LED to aqua
-    elif 10 < scrap.temp_c <= 15: # If temp_C is between 10 and 15 change LED to yellow
+    elif 10 < scrap.temp_c <= 20: # If temp_C is between 10 and 15 change LED to yellow
         print 'yellow'
         arduino.write('#yellow#yellow;') # Change RGB LED to yellow
     elif 20 < scrap.temp_c <= 30: # If temp_c is between 20 and 30 change LED to orange
