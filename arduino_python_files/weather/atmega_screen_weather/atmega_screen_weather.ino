@@ -14,8 +14,9 @@ String highest_temp;  // string that stores highest temp
 String highest_time;   // string that stores highest temp time
 
 uint8_t degree[8] = {0x8,0xf4,0x8,0x43,0x4,0x4,0x43,0x0}; // Custom char degrees c
-uint8_t left[8] = {0x0,0x0,0x0,0x21,0x3,0x7,0xf,0xf};
-uint8_t centre[8] = {0x0,0x0,0x0,0x1f,0x1f,0x1f,0x1f,0x1f};
+uint8_t left[8] = {0x0,0x0,0x0,0x3,0x7,0xf,0xf,0x1f};
+uint8_t centre[8] = {0x0,0x0,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f};
+uint8_t right[8] = {0x0,0x0,0x0,0xf8,0x1c,0x1e,0x1e,0x1f};
 
 //RTTTL player stuff
 int threshold = 30;  // Sound sensor threshold - lower for more sensative higher for less
@@ -97,18 +98,22 @@ void setup() {
   lcd.createChar(0, degree);
   lcd.createChar(1, left);
   lcd.createChar(2, centre);
+  lcd.createChar(3, right);
   
-  pinMode(redPin, OUTPUT); // Set red led pin to output
-  pinMode(greenPin, OUTPUT); // Set green led pin to output
-  pinMode(bluePin, OUTPUT); // Set blue led pin to output
-  
-  lcd.setCursor(0,0);
+  // Splash screen
+  lcd.setCursor(1,0); // Set lcd cursor to start of first line
+  lcd.print("#atmega_screen");
+  lcd.setCursor(1,1);
+  lcd.print("Weather screen");
+  delay(1000);
+  /*lcd.setCursor(0,0);
   lcd.print("Weather screen");
   lcd.setCursor(0,1);
-  //lcd.print((char)1);
-  //lcd.print((char)2);
+  lcd.print((char)1);
+  lcd.print((char)2);
+  lcd.print((char)3);
   lcd.print("V0.1");
-  delay(1000);
+  delay(1000);*/
   
   pinMode(button_green, INPUT); // Set the button as input
   digitalWrite(button_green, HIGH); // initiate the internal pull up resistor
@@ -116,6 +121,10 @@ void setup() {
   digitalWrite(button_top_red, HIGH); // initiate the internal pull up resistor
   pinMode(button_bottom_red, INPUT); // Set the button as input
   digitalWrite(button_bottom_red, HIGH); // initiate the internal pull up resistor
+  
+  pinMode(redPin, OUTPUT); // Set red led pin to output
+  pinMode(greenPin, OUTPUT); // Set green led pin to output
+  pinMode(bluePin, OUTPUT); // Set blue led pin to output
   
   Serial.begin(9600); // Begin serial at 9600 baud
   Serial.println("Waiting"); // Print to serial 
