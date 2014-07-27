@@ -187,9 +187,9 @@ Atmega_screen edition
         arduino.write('#yellow#yellow;') # Change RGB LED to yellow
     elif 20 < scrap.temp_c <= 30: # If temp_c is between 20 and 30 change LED to orange
         print 'orange'
-        arduino.write('#orange#orange;') # Change RGB LED to red
+        arduino.write('#orange#orange;') # Change RGB LED to orange
     elif 30 < scrap.temp_c <= 40: # If temp_c is between 30 and 40 change LED to red
         print 'red'
-        arduino.write('#red#red;')
+        arduino.write('#red#red;') # Change RGB LED to red
     else: 
         print '#not colour#;'
