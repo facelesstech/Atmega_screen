@@ -64,8 +64,12 @@ void setup() {
   // Splash screen
   lcd.setCursor(1,0); // Set lcd cursor to start of first line
   lcd.print("#atmega_screen");
-  lcd.setCursor(2,1); // Set lcd cursor to 2nd char on 2nd line
+  lcd.setCursor(0,1); // Set lcd cursor to 2nd char on 2nd line
+  lcd.write(36); // Print US dollar sign to LCD
+  lcd.setCursor(2,1); // Set cursor to 2nd char on 2nd row
   lcd.print("Stock ticker");
+  lcd.setCursor(15,1); // Set cursor to 15th char on 2nd row
+  lcd.write(36); // Print US dollar sign to LCD
   delay(1000);
   
   pinMode(button_green, INPUT);
