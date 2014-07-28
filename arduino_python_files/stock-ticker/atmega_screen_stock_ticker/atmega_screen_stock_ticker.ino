@@ -20,7 +20,7 @@ int buttonPushCounter1 = 5;    // counts the button pushes
 int buttonState1 = 0;    // tracks the button state
 int lastButtonState1 = 0;    // last state of the button
 
-// Debounce stuff green button
+// Debounce green button
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;
 long lastDebounceTime = 0;  // the last time the output pin was toggled
@@ -31,7 +31,7 @@ const int button_top_red = 7; // Button set to pin 7
 long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
 int state = 1;      // the current state of the output pin
-int reading;           // the current reading from the input pin
+int reading_red_top;           // the current reading from the input pin
 int previous = LOW;    // the previous reading from the input pin
 
 // Button red bottom stuff
@@ -56,11 +56,17 @@ int bluePin = 10;
 #define COMMON_ANODE
 
 void setup() {
-  lcd.backlight();
-  lcd.init();
-  pinMode(redPin, OUTPUT);
-  pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
+  lcd.backlight(); // Turn lcd backlight on
+  lcd.init(); // Start the LCD
+  lcd.createChar(0, pound);  //  Custom Char british pound
+  lcd.begin(16, 2); // Start LCD screen off
+  
+  // Splash screen
+  lcd.setCursor(1,0); // Set lcd cursor to start of first line
+  lcd.print("#atmega_screen");
+  lcd.setCursor(2,1); // Set lcd cursor to 2nd char on 2nd line
+  lcd.print("Stock ticker");
+  delay(1000);
   
   pinMode(button_green, INPUT);
   digitalWrite(button_green, HIGH);
@@ -69,10 +75,12 @@ void setup() {
   pinMode(button_bottom_red, INPUT); // Set the button as input
   digitalWrite(button_bottom_red, HIGH); // initiate the internal pull up resistor
   
-  lcd.createChar(0, pound);  //  Custom Char
-  Serial.begin(9600); // Start serial
+  pinMode(redPin, OUTPUT); // Set red led pin to output
+  pinMode(greenPin, OUTPUT); // Set green led pin to output
+  pinMode(bluePin, OUTPUT); // Set blue led pin to output
+  
+  Serial.begin(9600); // Begin serial at 9600 baud
   Serial.println("Waiting"); // Print serial
-  lcd.begin(16, 2); // Start LCD screen off  
 }
 
 void loop() {
@@ -168,9 +176,9 @@ void loop() {
   // if the input just went from LOW and HIGH and we've waited long enough
   // to ignore any noise on the circuit, toggle the output pin and remember
   // the time
-  reading = digitalRead(button_top_red);
+  reading_red_top = digitalRead(button_top_red);
 
-  if (reading == HIGH && previous == LOW && millis() - time > debounce) {
+  if (reading_red_top == HIGH && previous == LOW && millis() - time > debounce) {
     if (state == 1) {
       state = 0;
       lcd.backlight();
@@ -183,11 +191,11 @@ void loop() {
     time = millis();    
   }
   //Serial.println(state);
-  previous = reading;
+  previous = reading_red_top;
    
   // -------------- Debound code button top red end code --------------
   
-// -------------- Debound code button top red start code--------------
+// -------------- Debound code button bottom red start code--------------
 
   // if the input just went from LOW and HIGH and we've waited long enough
   // to ignore any noise on the circuit, toggle the output pin and remember
@@ -197,11 +205,9 @@ void loop() {
   if (reading_bottom_red == HIGH && previous_bottom_red == LOW && millis() - time_bottom_red > debounce_bottom_red) {
     if (LED_state == 1) {
       LED_state = 0;
-      //lcd.backlight();
     }
     else {
       LED_state = 1;
-      //lcd.noBacklight();
     }
 
     time_bottom_red = millis();    
@@ -211,11 +217,10 @@ void loop() {
    
   // -------------- Debound code button bottom red end code --------------
   
-  
     if (buttonPushCounter1 == 1) { 
       lcd.print("GOOG stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0);
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(GOOG); // Print LCD stock price
       
@@ -231,18 +236,17 @@ void loop() {
           else if (GOOG_LED == "2") {
             setColor(255, 0, 0);  // red
           }
-          else if (GOOG_LED == "3") {
+          else {
             setColor(0, 0, 0);  // off
         }
         }
     }
     
-      
  
     if (buttonPushCounter1 == 2) {
       lcd.print("AAPL stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(AAPL); // Print LCD stock price
       
@@ -267,7 +271,7 @@ void loop() {
     if (buttonPushCounter1 == 3) {
       lcd.print("TWTR stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(TWTR); // Print LCD stock price
       
@@ -292,7 +296,7 @@ void loop() {
     if (buttonPushCounter1 == 4) {
       lcd.print("FB stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(FB); // Print LCD stock price
       
@@ -319,7 +323,7 @@ void loop() {
       lcd.clear();
       lcd.print("GOOG stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(GOOG); // Print LCD stock price
       
@@ -347,7 +351,7 @@ void loop() {
       lcd.clear();
       lcd.print("AAPL stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(AAPL); // Print LCD stock price
       if (LED_state == 1) {
@@ -374,7 +378,7 @@ void loop() {
       lcd.clear();
       lcd.print("TWTR stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(TWTR); // Print LCD stock price
       
@@ -402,7 +406,7 @@ void loop() {
       lcd.clear();
       lcd.print("FB stock price"); // Print LCD stock price
       lcd.setCursor(0,1); // Change cursor position
-      lcd.print((char)0); // Print custom pound sign to LCD
+      lcd.write(36); // Print US dollar sign to LCD
       lcd.setCursor(1,1); // Change cursor position
       lcd.print(FB); // Print LCD stock price
       
