@@ -30,7 +30,6 @@ int state = 1;      // the current state of the output pin
 int reading_red_top;           // the current reading from the input pin
 int previous = LOW;    // the previous reading from the input pin
 
-
 // Timing for the display cycle
 long waitUntilcycle1 = 0;
 long waitUntilcycle2 = 5000;
@@ -51,6 +50,13 @@ void setup() {
   lcd.begin(16, 2); // Set up the lcd to have 16 char on 2 lines
   lcd.createChar(0, pound);  //  Custom Char british pound
   lcd.createChar(1, euro); // Custom char euro
+  
+  // Splash screen
+  lcd.setCursor(1,0); // Set lcd cursor to start of first line
+  lcd.print("#atmega_screen");
+  lcd.setCursor(1,1); // Set lcd cursor to 2nd char on 2nd line
+  lcd.print("Currency rates");
+  delay(1000);
 }
 
 void loop() {
