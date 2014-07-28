@@ -15,6 +15,8 @@ byte monthday = 0; // Setting up bytes for monthday
 byte month = 0; // Setting up bytes for month
 byte year = 0;  // Setting up bytes for year
 
+uint8_t clock[8] = {0x0,0xe,0x15,0x15,0x17,0x11,0x11,0xe}; // Custom char clock?
+
 // Button red stuff
 const int button_top_red = 7; // Button set to pin 5
 long time = 0;         // the last time the output pin was toggled
@@ -30,10 +32,16 @@ void setup() {
   lcd.begin(16, 2); // Set up the lcd to have 16 char on 2 lines
   
   // Splash screen
+  lcd.createChar(0, clock);
+  
   lcd.setCursor(1,0); // Set lcd cursor to start of first line
   lcd.print("#atmega_screen");
-  lcd.setCursor(3,1); // Set lcd cursor to start of first line
+  lcd.setCursor(0,1); // Set lcd cursor to start of first line
+  lcd.print((char)0);
+  lcd.setCursor(3,1);
   lcd.print("Clock v0.1");
+  lcd.setCursor(15,1); // Set lcd cursor to start of first line
+  lcd.print((char)0);
   delay(1000);
   lcd.clear();
   
@@ -76,6 +84,7 @@ void loop() {
   lcd.setCursor(0,0); // Set lcd cursor to start of first line
   readTime(); // Runs readTime to get RTC data
   lcd.print(days[weekday-1]);
+  //lcd.print((char)0);
   lcd.setCursor(0,1); // Set lcd cursor to start of second line
   lcd.print(monthday);
   lcd.print("/");
