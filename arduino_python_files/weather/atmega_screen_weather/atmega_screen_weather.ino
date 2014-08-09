@@ -1,3 +1,20 @@
+/*
+Copyright (C) 2014  Dale Beever
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses/.
+*/
+
 #include <rtttl.h>
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
@@ -18,7 +35,7 @@ uint8_t degree[8] = {0x8,0xf4,0x8,0x43,0x4,0x4,0x43,0x0}; // Custom char degrees
 //RTTTL player stuff
 int threshold = 30;  // Sound sensor threshold - lower for more sensative higher for less
 int volume;  // Readings from sound sensor
-int pinSpeaker = 8;  // Speaker pin 1
+int pinSpeaker = 8;  // Speaker pin 8
 const int octave = 0;  // The octave set for the player
 const char button_green_tone[] PROGMEM ="button:16e";
 const char button_red_backlight_tone[] PROGMEM ="button:16e";
@@ -255,7 +272,7 @@ void loop() {
             if (buttonPushCounter1 == 9) { // Check buttonPushCounter1 is == 9
               buttonPushCounter1 = 1;} // If buttonPushCounter == 9 then set buttonPushCounter1 to 1
               lcd.clear(); // Clear the lcd
-              playSong(button_green_tone); // Play button sound
+              //playSong(button_green_tone); // Play button sound
           }
           else {
             //Serial.println("off"); 
@@ -308,7 +325,7 @@ void loop() {
 
     time_bottom_red = millis();    
   }
-    Serial.println(LED_state);
+    //Serial.println(LED_state);
   previous_bottom_red = reading_bottom_red;
    
   // -------------- Debound code button bottom red end code --------------
