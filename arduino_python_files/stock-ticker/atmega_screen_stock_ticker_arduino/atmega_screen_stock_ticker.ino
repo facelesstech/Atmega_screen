@@ -49,15 +49,15 @@ long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
 int state = 1;      // the current state of the output pin
 int reading_red_top;           // the current reading from the input pin
-int previous = LOW;    // the previous reading from the input pin
+int previous = HIGH;    // the previous reading from the input pin
 
 // Button red bottom stuff
 const int button_bottom_red = 6; // Button set to pin 6
 long time_bottom_red = 0;         // the last time the output pin was toggled
 long debounce_bottom_red = 200;   // the debounce time, increase if the output flickers
-int LED_state = 1;      // the current state of the output pin
+int LED_state = 0;      // the current state of the output pin
 int reading_bottom_red;           // the current reading from the input pin
-int previous_bottom_red = LOW;    // the previous reading from the input pin
+int previous_bottom_red = HIGH;    // the previous reading from the input pin
 
 // Timing for the display cycle
 long waitUntilcycle1 = 0;
@@ -73,6 +73,7 @@ int bluePin = 10;
 #define COMMON_ANODE
 
 void setup() {
+  setColor(0, 0, 0);
   lcd.backlight(); // Turn lcd backlight on
   lcd.init(); // Start the LCD
   lcd.createChar(0, pound);  //  Custom Char british pound
@@ -200,12 +201,12 @@ void loop() {
   reading_red_top = digitalRead(button_top_red);
 
   if (reading_red_top == HIGH && previous == LOW && millis() - time > debounce) {
-    if (state == 1) {
-      state = 0;
+    if (state == 0) {
+      state = 1;
       lcd.backlight();
     }
     else {
-      state = 1;
+      state = 0;
       lcd.noBacklight();
     }
 
@@ -224,16 +225,16 @@ void loop() {
   reading_bottom_red = digitalRead(button_bottom_red);
 
   if (reading_bottom_red == HIGH && previous_bottom_red == LOW && millis() - time_bottom_red > debounce_bottom_red) {
-    if (LED_state == 1) {
-      LED_state = 0;
+    if (LED_state == 0) {
+      LED_state = 1;
     }
     else {
-      LED_state = 1;
+      LED_state = 0;
     }
 
     time_bottom_red = millis();    
   }
-    Serial.println(LED_state);
+    //Serial.println(LED_state);
   previous_bottom_red = reading_bottom_red;
    
   // -------------- Debound code button bottom red end code --------------
