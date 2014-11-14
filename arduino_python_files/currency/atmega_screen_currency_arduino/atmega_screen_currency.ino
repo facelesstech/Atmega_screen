@@ -45,7 +45,7 @@ long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
 int state = 1;      // the current state of the output pin
 int reading_red_top;           // the current reading from the input pin
-int previous = LOW;    // the previous reading from the input pin
+int previous = HIGH;    // the previous reading from the input pin
 
 // Timing for the display cycle
 long waitUntilcycle1 = 0;
@@ -146,12 +146,12 @@ void loop() {
   reading_red_top = digitalRead(button_top_red);
 
   if (reading_red_top == HIGH && previous == LOW && millis() - time > debounce) { 
-    if (state == 1) {
-      state = 0;
+    if (state == 0) {
+      state = 1;
       lcd.backlight(); // Turn backlight on
     }
     else {
-      state = 1;
+      state = 0;
       lcd.noBacklight(); // Turn off backlight
     }
 
